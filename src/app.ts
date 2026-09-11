@@ -2,7 +2,7 @@ import type { AppRequest, AppResponse } from "./http.js";
 import { parseCookies, parseForm, html, redirect, text } from "./http.js";
 import { SESSION_COOKIE, verifySession, createSession, checkPassword, sessionCookie, clearSessionCookie, expectedPassword } from "./auth.js";
 import { loginPage, setupPage } from "./ui/layout.js";
-import { isDemo } from "./config.js";
+import { isDemo, env } from "./config.js";
 import type { Ctx, Handler } from "./pages/ctx.js";
 import { dashboard } from "./pages/dashboard.js";
 import { deploymentsIndex, deploymentsProject, deploymentsRedeploy } from "./pages/deployments.js";
@@ -94,13 +94,15 @@ export async function handle(req: AppRequest): Promise<AppResponse> {
   const session = verifySession(cookies[SESSION_COOKIE]);
 
   if (path === "/login") {
-    if (method === "GET") return session ? redirect("/") : html(loginPage(undefined, isDemo()));
+    // L'indice « mot de passe : demo » n'est vrai que si aucun CONSOLE_PASSWORD n'est défini.
+    const demoHint = isDemo() && !env("CONSOLE_PASSWORD");
+    if (method === "GET") return session ? redirect("/") : html(loginPage(undefined, demoHint));
     if (method === "POST") {
       if (!sameOrigin(req)) return html(loginPage("Requête refusée (origine)."), 403);
       const form = parseForm(req.body);
       if (!checkPassword(form["password"] ?? "")) {
         await new Promise((r) => setTimeout(r, 400)); // ralentit un peu les essais séquentiels ; choisir un mot de passe long reste la vraie défense
-        return html(loginPage("Mot de passe incorrect.", isDemo()), 401);
+        return html(loginPage("Mot de passe incorrect.", demoHint), 401);
       }
       const { token } = createSession();
       return redirect("/", { "set-cookie": sessionCookie(token, secure) });
