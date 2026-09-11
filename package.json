@@ -10,8 +10,7 @@
   "scripts": {
     "dev": "tsx src/server.ts",
     "demo": "DEMO_MODE=1 CONSOLE_PASSWORD=demo tsx src/server.ts",
-    "typecheck": "tsc --noEmit",
-    "build": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {},
   "devDependencies": {

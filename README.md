@@ -31,13 +31,13 @@ npm run dev
 
 ## Déploiement sur Vercel
 
-1. Poussez ce dossier dans un dépôt GitHub et importez-le dans Vercel (framework : *Other*). `vercel.json` route tout vers la fonction `api/index.ts`.
+1. Poussez ce dossier dans un dépôt GitHub et importez-le dans Vercel (préréglage : *Other*, aucune commande de build). `vercel.json` route tout vers la fonction `api/index.ts` ; le dossier `public/` (robots.txt) sert de répertoire de sortie.
 2. Dans **Settings → Environment Variables**, ajoutez au minimum `CONSOLE_PASSWORD` et `SESSION_SECRET`, puis les clés des services que vous voulez brancher (liste dans `.env.example`).
 3. Redéployez. Sans `CONSOLE_PASSWORD`, l'application affiche une page d'installation et refuse de servir quoi que ce soit.
 
 ## Obtenir les clés
 
-- **Vercel** : Account Settings → Tokens → créer un jeton. Si vos projets sont dans une équipe, `VERCEL_TEAM_ID` = l'ID `team_…` (Team Settings → General).
+- **Vercel** : Account Settings → Tokens → créer un jeton (variable `VC_API_TOKEN` — le préfixe `VERCEL_` est réservé par Vercel et refusé dans ses variables d’environnement). Si vos projets sont dans une équipe, `VC_TEAM_ID` = l'ID `team_…` (Team Settings → General).
 - **GitHub** : Settings → Developer settings → Personal access tokens. Un jeton *fine-grained* avec lecture des dépôts (Contents, Metadata, Pull requests, Issues) suffit ; ajoutez l'organisation dans son périmètre.
 - **Resend** : API Keys → clé avec *Full access* (la permission « sending only » ne permet pas de lister les envois).
 - **Porkbun** : Account → API Access → créer une paire de clés, puis **activer « API Access » sur chaque domaine** (Domain Management → domaine → API Access), sinon Porkbun renvoie une erreur.
