@@ -1,0 +1,22 @@
+{
+  "name": "natais-console",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tour de contrôle unifiée : Vercel, GitHub, Resend, Porkbun et Stripe dans une seule application (zéro dépendance d'exécution).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "demo": "DEMO_MODE=1 CONSOLE_PASSWORD=demo tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
