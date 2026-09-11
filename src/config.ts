@@ -19,8 +19,8 @@ export const SERVICES: ServiceMeta[] = [
     label: "Vercel",
     role: "Hébergement & déploiements",
     envVars: [
-      { name: "VERCEL_TOKEN", required: true, hint: "Jeton d'accès : vercel.com → Settings → Tokens" },
-      { name: "VERCEL_TEAM_ID", required: false, hint: "ID d'équipe (team_…) si les projets sont dans une équipe ; vide pour le compte personnel" },
+      { name: "VC_API_TOKEN", required: true, hint: "Jeton d'accès : vercel.com → Settings → Tokens (le préfixe VERCEL_ est réservé par Vercel, d'où VC_)" },
+      { name: "VC_TEAM_ID", required: false, hint: "ID d'équipe (team_…) si les projets sont dans une équipe ; vide pour le compte personnel" },
     ],
     docsUrl: "https://vercel.com/docs/rest-api",
   },
