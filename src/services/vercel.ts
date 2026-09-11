@@ -32,11 +32,11 @@ export interface VercelDomain {
 }
 
 function headers(): Record<string, string> {
-  return { authorization: `Bearer ${env("VERCEL_TOKEN")}`, "content-type": "application/json" };
+  return { authorization: `Bearer ${env("VC_API_TOKEN")}`, "content-type": "application/json" };
 }
 
 function teamQuery(prefix = "?"): string {
-  const team = env("VERCEL_TEAM_ID");
+  const team = env("VC_TEAM_ID");
   return team ? `${prefix}teamId=${encodeURIComponent(team)}` : "";
 }
 
@@ -58,7 +58,7 @@ export async function listProjects(): Promise<VercelProject[]> {
   ensure();
   if (isDemo()) return demoVercel.projects;
   const q = new URLSearchParams({ limit: "50" });
-  const team = env("VERCEL_TEAM_ID");
+  const team = env("VC_TEAM_ID");
   if (team) q.set("teamId", team);
   const data = await apiCall<{ projects: RawProject[] }>("vercel", `${BASE}/v9/projects?${q}`, { headers: headers() });
   return (data.projects ?? []).map((p) => {
@@ -110,7 +110,7 @@ export async function listDeployments(projectId?: string, limit = 10): Promise<V
   }
   const q = new URLSearchParams({ limit: String(limit) });
   if (projectId) q.set("projectId", projectId);
-  const team = env("VERCEL_TEAM_ID");
+  const team = env("VC_TEAM_ID");
   if (team) q.set("teamId", team);
   const data = await apiCall<{ deployments: RawDeployment[] }>("vercel", `${BASE}/v6/deployments?${q}`, { headers: headers() });
   return (data.deployments ?? []).map(mapDeployment);
@@ -136,7 +136,7 @@ export async function redeploy(deploymentId: string, projectName: string, target
   const body: Record<string, unknown> = { name: projectName, deploymentId };
   if (target === "production") body["target"] = "production";
   const q = new URLSearchParams({ forceNew: "1" });
-  const team = env("VERCEL_TEAM_ID");
+  const team = env("VC_TEAM_ID");
   if (team) q.set("teamId", team);
   const d = await apiCall<RawDeployment & { id?: string }>("vercel", `${BASE}/v13/deployments?${q}`, {
     method: "POST",
